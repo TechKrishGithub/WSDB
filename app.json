@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "WSDB",
-    "slug": "WSDB",
+    "slug": "wsdb",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.techno3344.wsdb"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f0ba8cc2-8884-4d29-b5e1-740f2cb42fae"
+      }
+    },
+    "owner": "techno3344"
   }
 }
