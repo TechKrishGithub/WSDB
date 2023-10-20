@@ -1,52 +1,72 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Button } from 'react-native';
-import styles from '../style';
 import { IconButton, MD3Colors } from 'react-native-paper';
-import LocationDetails from './LocationDetails';
-import TypeOfSource from './TypeOfSource';
-import Construction from './Construction';
-import Operation from './Operation';
-import OperationStatus from './OperationStatus';
-// import WaterQuality from './WaterQuality';
-import VillageGuiad from "./VillageGuiad"
-import EnumeratorDetails from './EnumeratorDetails';
-import DataVerification from './DataVerification';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { FloatingLabelInput } from 'react-native-floating-label-input';
+import LocationDetail from './LocationDetail';
+import LocationDetailsForAll from '../LocationForAll';
+import styles from '../style';
+import TypeSystem from './TypeSystem';
+import GenralInformation from './GeneralInformation';
+import OperationsMaintenance from './OperationsMaintenance';
+import OperationalFunction from './OperationalFunction';
+import OtherInfoDwo from './OtherInfoDwo';
+import EnumeratorsDetails from './EnumeratorsDetails';
+import Respondents from './Respondents';
+import DataVerifications from './DataVerifications';
 import { selectData } from '../../DataBaseHandle';
 import { GpsSet } from '../../CustomComponents/GpsCordinates';
 
 
-
-const PointSource = () => {
+const PipedWaterScheme = () => {
     const [activeTabId, setActiveTabId] = useState(1);
-    const [locDet, setLocDet] = React.useState([]);
-    const [Location, setLocation] = useState({
+    const [Locations, setLocations] = useState({
         SelectionList: { District: '', County: '', SubCounty: '', Parish: '' }, Normal: {
             Village: '',
             Longitude: '',
             Latitude: '',
             Elevation: '',
-            source: ''
+            Refugee_Campe_Name: '',
         }
     });
-    const [TypeOfSourceData, setTypeOfSourceData] = React.useState({});
-    const [ConstructionData, setConstructionData] = React.useState({});
-    const [OperationData, setOperationData] = React.useState({});
-    const [OperationStatusData, setOperationStatusData] = React.useState({});
-    const [WaterQualityData, setWaterQualityData] = React.useState({});
-    const [VillageGuiadData, setVillageGuiadData] = React.useState({});
-    const [EnumeratorDetailsData, setEnumeratorDetailsData] = React.useState({});
-    const [DataVerificationData, setDataVerificationData] = React.useState({});
+
+    const [locDet, setLocDet] = React.useState([]);
+
+    React.useEffect(() => {
+        Gps();
+        GetLocDet();
+    }, [])
+
+    const Gps = async () => {
+        const { latitude, longitude } = await GpsSet();
+        const updatedData = { ...Locations };
+        updatedData.Normal.Latitude = latitude.toString();
+        updatedData.Normal.Longitude = longitude.toString();
+        setLocations(updatedData)
+    }
+
+    const GetLocDet = async () => {
+        const data = await selectData('LocationDetails');
+        setLocDet(data)
+    }
+
+    const [TypeSystemData, setTypeSystemData] = React.useState({});
+    const [GenralInformationData, setGenralInformationData] = React.useState({});
+    const [OperationsMaintenanceData, setOperationsMaintenanceData] = React.useState({});
+    const [OtherInfoDwoData, setOtherInfoDwoData] = React.useState({});
+    const [EnumeratorsDetailsData, setEnumeratorsDetailsData] = React.useState({});
+    const [RespondentsData, setRespondentsData] = React.useState({});
+    const [OperationalFunctionData, setOperationalFunctionData] = React.useState({});
+    const [DataVerificationsData, setDataVerificationsData] = React.useState({});
+
 
     const tabs = [
-        { id: 1, name: 'Location' },
-        { id: 2, name: 'Type of Source' },
-        { id: 3, name: 'Construction and Ownership' },
+
+        { id: 1, name: 'Location(Source Location)' },
+        { id: 2, name: 'Type System' },
+        { id: 3, name: 'General information' },
         { id: 4, name: 'Operation and Maintenance' },
         { id: 5, name: 'Operational Status(Functionally)' },
-        { id: 6, name: 'Water Quality' },
-        { id: 7, name: 'Village Guiad/Respondent' },
+        { id: 6, name: 'Other Info as reqired by the DWO' },
+        { id: 7, name: 'Respondent' },
         { id: 8, name: 'Enumerator Details' },
         { id: 9, name: 'Data Verification' },
 
@@ -90,44 +110,18 @@ const PointSource = () => {
     };
 
 
-    const WaterQuality = () => {
-        return (
-            <>
-
-            </>
-        )
-    }
-
-    React.useEffect(() => {
-        Gps();
-        GetLocDet();
-    }, [])
-
-    const Gps = async () => {
-        const { latitude, longitude } = await GpsSet();
-        const updatedData = { ...Location };
-        updatedData.Normal.Latitude = latitude.toString();
-        updatedData.Normal.Longitude = longitude.toString();
-        setLocation(updatedData)
-    }
-
-    const GetLocDet = async () => {
-        const data = await selectData('LocationDetails');
-        setLocDet(data)
-    }
-
 
     const tabContents = {
-        1: <LocationDetails Location={Location} setLocation={setLocation} locDet={locDet} />,
-        2: <TypeOfSource TypeOfSourceData={TypeOfSourceData} setTypeOfSourceData={setTypeOfSourceData} />,
-        3: <Construction Construction={ConstructionData} setConstruction={setConstructionData} />,
-        4: <Operation Operation={OperationData} setOperation={setOperationData} />,
-        5: <OperationStatus OperationStatus={OperationStatusData} setOperationStatus={setOperationStatusData} />,
-        // 6: <WaterQuality WaterQuality ={WaterQualityData} setWaterQuality ={setWaterQualityData}/>,
-        6: WaterQuality(),
-        7: <VillageGuiad VillageGuiad={VillageGuiadData} setVillageGuiad={setVillageGuiadData} />,
-        8: <EnumeratorDetails EnumeratorDetails={EnumeratorDetailsData} setEnumeratorDetails={setEnumeratorDetailsData} />,
-        9: <DataVerification DataVerification={DataVerificationData} setDataVerification={setDataVerificationData} />
+        1: <LocationDetail Locations={Locations} setLocations={setLocations} locDet={locDet} />,
+        2: <TypeSystem TypeSystem={TypeSystemData} setTypeSystem={setTypeSystemData} />,
+        3: <GenralInformation GenralInformation={GenralInformationData} setGenralInformation={setGenralInformationData} />,
+        4: <OperationsMaintenance OperationsMaintenance={OperationsMaintenanceData} setOperationsMaintenance={setOperationsMaintenanceData} />,
+        5: <OperationalFunction OperationalFunction={OperationalFunctionData} setOperationalFunction={setOperationalFunctionData} />,
+        6: <OtherInfoDwo OtherInfoDwo={OtherInfoDwoData} setOtherInfoDwo={setOtherInfoDwoData} />,
+        7: < Respondents Respondents={RespondentsData} setRespondents={setRespondentsData} />,
+        8: <EnumeratorsDetails EnumeratorsDetails={EnumeratorsDetailsData} setEnumeratorsDetails={setEnumeratorsDetailsData} />,
+        9: <DataVerifications DataVerifications={DataVerificationsData} setDataVerifications={setDataVerificationsData} />
+
     };
 
     return (
@@ -135,7 +129,7 @@ const PointSource = () => {
             style={[styles.container, { backgroundColor: '#f0f6f8' }]}
         >
             <View style={styles.Title}>
-                <Text style={styles.TitleText}> {`➪  Point Water Source`}</Text>
+                <Text style={styles.TitleText}> {`➪  Piped Water Schemes`}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                 <IconButton
@@ -186,4 +180,4 @@ const PointSource = () => {
     );
 };
 
-export default PointSource;
+export default PipedWaterScheme;

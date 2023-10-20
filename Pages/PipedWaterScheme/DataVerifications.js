@@ -4,67 +4,35 @@ import styles from '../style';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { FloatingLabelInput } from "react-native-floating-label-input";
 
-const Operation = ({ Operation, setOperation }) => {
-  const OperationData = [
-    "Type of Management *",
-    "Communal",
-    "Private/Individual",
-    "Private Operator",
-    "Institutional",
-    "Other-Specify",
-    "Other-Specify_Data",
-    "Does this Source have a WSC *",
-    "If Yes, When was this WSC Established",
-    "Yes - Month/Year of Establishment",
-    "No",
-    "If Established, Is was the it trained",
-    "Yes - Month/Year of Training",
-    "No",
-    "Is WSC functional",
-    "If WSC is Functional, tick applicable box",
-    "WSC is collecting user fees",
-    "WSC undertakes regular servicing/minor repairs",
-    "WSC is holding regular meetings",
-    "Environment/sanitation around the source is ok",
-    "If WSC is not functional,indicate main reasons why: ",
-    "Source Dried Up/Low Yield",
-    "WSC Not trained",
-    "Majority of Members shifted/moved/Died",
-    "Alternative Water facility In place",
-    "Source Brokedown beyond means of Community",
-    "WSC Not Commited",
-    "Other",
-    "If WSC exists",
-    "No.of members on WSC",
-    "No.of active members on WSC",
-    "No.of women on WSC",
-    "Are there women in key Positions",
-    "No.of women holding key positions",
-    "Tick applicable position(s) below",
-    "Chairperson",
-    "Vice-chairperson",
-    "Secretary",
-    "Treasurer",
+const DataVerifications = ({ DataVerifications, setDataVerifications }) => {
+
+  const DataVerificationsData = [
+    "DataVerifications*",
+    "Name",
+    "Date",
+    "Telphone",
+    "Signature"
   ];
 
   const handleType = (label, index) => {
-    if (Operation[index] === label) {
-      const updatedData = { ...Operation };
+    if (DataVerifications[index] === label) {
+      const updatedData = { ...DataVerifications };
       delete updatedData[index];
-      setOperation(updatedData);
+      setDataVerifications(updatedData);
     } else {
-      setOperation({ ...Operation, [index]: label });
+      setDataVerifications({ ...DataVerifications, [index]: label });
     }
   };
+
   return (
     <View>
-      {OperationData.map((v, index) => {
+      {DataVerificationsData.map((v, index) => {
         const shouldDisplayInput = [
-          0, 6, 9, 8, 11, 12, 15, 20, 27, 28, 29, 30, 31, 33, 34,
+          0, 1, 2, 3
         ].includes(index);
         const Test =
-          (Object.keys(Operation).includes("5") && index == 6) ||
-          ![6].includes(index);
+          (Object.keys(DataVerifications).includes("5") && index == 6) ||
+          ![5].includes(index);
         return (
           <View key={index}>
             {!shouldDisplayInput ? (
@@ -74,12 +42,12 @@ const Operation = ({ Operation, setOperation }) => {
                 fillColor="#134484"
                 style={{ padding: 10 }}
                 text={v}
-                isChecked={Operation[index] ? true : false}
+                isChecked={DataVerifications[index] ? true : false}
                 innerIconStyle={{ borderWidth: 2 }}
                 textStyle={{ textDecorationLine: "none", color: "#134484" }}
                 onPress={() => handleType(v, index)}
               />
-            ) : ![0, 8, 11, 15, 20, 28, 34].includes(index) ? (
+            ) : ![0].includes(index) ? (
               <View
                 style={[
                   {
@@ -94,8 +62,8 @@ const Operation = ({ Operation, setOperation }) => {
                 {Test && (
                   <FloatingLabelInput
                     label={`${v.replace("_Data", "")}`}
-                    value={Operation[v]}
                     hint={`${v.replace("_Data", "")}`}
+                    value={DataVerifications[v]}
                     onChangeText={(e) => handleType(e, v)}
                     containerStyles={styles.input}
                     inputStyles={{ color: '#2b0847', fontWeight: '500' }}
@@ -119,4 +87,7 @@ const Operation = ({ Operation, setOperation }) => {
   );
 };
 
-export default Operation;
+
+
+
+export default DataVerifications;

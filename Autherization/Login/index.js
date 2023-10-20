@@ -1,21 +1,75 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity, Text, Image, ImageBackground, ActivityIndicator } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './style';
+import { InsertData, selectData } from '../../DataBaseHandle';
+import TableCreations from '../../DataBaseHandle/TableCreations';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import * as Location from "expo-location";
 
 
 const Login = ({ navigation }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
+
+    React.useEffect(() => {
+        GetData();
+    }, [])
+
+    const GetData = async () => {
+        const check = await selectData('LocationDetails');
+        if (check.length > 0) {
+            navigation.navigate('PinAccess')
+        }
+        else {
+            TableCreations();
+        }
+    }
+
+    React.useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert('Permission to access location was denied');
+                return;
+            }
+        })();
+    }, []);
 
     const handleLogin = () => {
         // Add your authentication logic here
         console.log('Username:', username);
         console.log('Password:', password);
-        navigation.navigate('PinAccess')
+        Insert();
     };
+
+    const Insert = async () => {
+        setLoading(true);
+        fetch('http://182.18.181.115:8084/api/Masterdata/Getadministrativeboundries').
+            then(response => response.json()).
+            then(result => JSON.parse(result)).
+            then(rest => {
+                rest.map(async (res, index) => {
+                    const dataToInsert = {
+                        District: res.districtname,
+                        County: res.countyname,
+                        SubCounty: res.subcountyname,
+                        Parish: res.parishname
+                    }
+                    await InsertData('LocationDetails', dataToInsert)
+                    if (index == rest.length - 1) {
+                        setLoading(false);
+                        setTimeout(() => {
+                            navigation.navigate('PinAccess')
+                        }, 1000)
+                    }
+                })
+            })
+    }
+
 
     return (
         <ImageBackground
@@ -72,6 +126,14 @@ const Login = ({ navigation }) => {
                         <Text style={styles.loginButtonText}>Login</Text>
                     </TouchableOpacity>
                 </View>
+                {loading &&
+                    <AwesomeAlert
+                        show={true}
+                        showProgress={true}
+                        message='Loading ...'
+                        messageStyle={{ color: 'blue', fontWeight: 'bold' }}
+                    />
+                }
             </LinearGradient>
         </ImageBackground>
     );

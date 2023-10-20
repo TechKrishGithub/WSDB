@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import styles from './style';
 
-const Monitoring = ({ route }) => {
+const Update = ({ route }) => {
   const { type } = route.params;
   return (
     <View style={styles.container}>
@@ -12,4 +12,4 @@ const Monitoring = ({ route }) => {
 };
 
 
-export default Monitoring;
+export default Update;

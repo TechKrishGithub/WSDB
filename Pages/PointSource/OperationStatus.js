@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import styles from './style';
+import styles from '../style';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 
@@ -51,8 +51,10 @@ const OperationStatus = ({ OperationStatus, setOperationStatus }) => {
                                         <FloatingLabelInput
                                             label={`${v.replace('_Data', '')}`}
                                             value={OperationStatus[v]}
+                                            hint={`${v.replace('_Data', '')}`}
                                             onChangeText={(e) => handleType(e, v)}
-                                            inputStyles={{ color: '#134484' }}
+                                            containerStyles={styles.input}
+                                            inputStyles={{ color: '#2b0847', fontWeight: '500' }}
                                             labelStyles={{ fontWeight: 'bold', overflow: 'hidden', width: '100%' }}
                                         />
                                     }
@@ -71,5 +73,6 @@ const OperationStatus = ({ OperationStatus, setOperationStatus }) => {
     )
 
 }
+
 
 export default OperationStatus;

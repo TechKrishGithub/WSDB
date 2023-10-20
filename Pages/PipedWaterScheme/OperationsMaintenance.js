@@ -4,67 +4,66 @@ import styles from '../style';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { FloatingLabelInput } from "react-native-floating-label-input";
 
-const Operation = ({ Operation, setOperation }) => {
-  const OperationData = [
-    "Type of Management *",
+const OperationsMaintenance = ({ OperationsMaintenance, setOperationsMaintenance }) => {
+
+  const OperationsMaintenanceData = [
+    "Type of Management/Operator",
     "Communal",
-    "Private/Individual",
-    "Private Operator",
-    "Institutional",
+    "Water and Sanitation Committee(WSC)",
+    "Private Operator -Name",
+    "NWSC",
+    "Water Board",
     "Other-Specify",
-    "Other-Specify_Data",
-    "Does this Source have a WSC *",
-    "If Yes, When was this WSC Established",
-    "Yes - Month/Year of Establishment",
-    "No",
-    "If Established, Is was the it trained",
-    "Yes - Month/Year of Training",
-    "No",
-    "Is WSC functional",
-    "If WSC is Functional, tick applicable box",
-    "WSC is collecting user fees",
-    "WSC undertakes regular servicing/minor repairs",
-    "WSC is holding regular meetings",
-    "Environment/sanitation around the source is ok",
-    "If WSC is not functional,indicate main reasons why: ",
-    "Source Dried Up/Low Yield",
-    "WSC Not trained",
+    "Is a Water Board9WB)/wSC in place ?",
+    "Is a WB/WSC in functional ?",
+    "If Functionality, does the WB/WSC do the following*",
+    "WB/WSC holds quarterly meetings",
+    "WB/WSC undertakes monitoring visits",
+    "WB/WSC checks books of accounts of the operator",
+    "If WB/WSC is not functional,indicate main reasons why*",
+    "Facility Gazezzetted",
+    "Water System Non-functional/partially Functional",
+    "WB Not trained",
+    "WB/ Not Committed",
+    "Altemative Water facilityNearby",
+    "Facility Brokedown beyond means of WB",
     "Majority of Members shifted/moved/Died",
-    "Alternative Water facility In place",
-    "Source Brokedown beyond means of Community",
-    "WSC Not Commited",
     "Other",
-    "If WSC exists",
-    "No.of members on WSC",
-    "No.of active members on WSC",
-    "No.of women on WSC",
-    "Are there women in key Positions",
-    "No.of women holding key positions",
-    "Tick applicable position(s) below",
+    "No of members on WB/WSC",
+    "No of active members on WB/WSC",
+    "No of women on WB/WSC",
+    "Are there women in key positions",
+    "No of women holding key positions",
     "Chairperson",
-    "Vice-chairperson",
+    "vice-Chairperson",
     "Secretary",
     "Treasurer",
+    "Attach Photos",
+    "Attach Office Photo",
+    "Attach Reservoir Photo",
+    "Attach Intake Photo",
+    "Attach kiosk/Public Tap Stand Photo"
   ];
 
   const handleType = (label, index) => {
-    if (Operation[index] === label) {
-      const updatedData = { ...Operation };
+    if (OperationsMaintenance[index] === label) {
+      const updatedData = { ...OperationsMaintenance };
       delete updatedData[index];
-      setOperation(updatedData);
+      setOperationsMaintenance(updatedData);
     } else {
-      setOperation({ ...Operation, [index]: label });
+      setOperationsMaintenance({ ...OperationsMaintenance, [index]: label });
     }
   };
+
   return (
     <View>
-      {OperationData.map((v, index) => {
+      {OperationsMaintenanceData.map((v, index) => {
         const shouldDisplayInput = [
-          0, 6, 9, 8, 11, 12, 15, 20, 27, 28, 29, 30, 31, 33, 34,
+          0, 9, 31, 13, 3, 6, 21, 22, , 23, 24, 26, 32, 33, 34, 35
         ].includes(index);
         const Test =
-          (Object.keys(Operation).includes("5") && index == 6) ||
-          ![6].includes(index);
+          (Object.keys(OperationsMaintenance).includes("5") && index == 6) ||
+          ![5].includes(index);
         return (
           <View key={index}>
             {!shouldDisplayInput ? (
@@ -74,12 +73,12 @@ const Operation = ({ Operation, setOperation }) => {
                 fillColor="#134484"
                 style={{ padding: 10 }}
                 text={v}
-                isChecked={Operation[index] ? true : false}
+                isChecked={OperationsMaintenance[index] ? true : false}
                 innerIconStyle={{ borderWidth: 2 }}
                 textStyle={{ textDecorationLine: "none", color: "#134484" }}
                 onPress={() => handleType(v, index)}
               />
-            ) : ![0, 8, 11, 15, 20, 28, 34].includes(index) ? (
+            ) : ![0, 9, 13, 31].includes(index) ? (
               <View
                 style={[
                   {
@@ -94,8 +93,8 @@ const Operation = ({ Operation, setOperation }) => {
                 {Test && (
                   <FloatingLabelInput
                     label={`${v.replace("_Data", "")}`}
-                    value={Operation[v]}
                     hint={`${v.replace("_Data", "")}`}
+                    value={OperationsMaintenance[v]}
                     onChangeText={(e) => handleType(e, v)}
                     containerStyles={styles.input}
                     inputStyles={{ color: '#2b0847', fontWeight: '500' }}
@@ -119,4 +118,8 @@ const Operation = ({ Operation, setOperation }) => {
   );
 };
 
-export default Operation;
+
+
+
+
+export default OperationsMaintenance;
