@@ -3,8 +3,10 @@ import { Entypo } from '@expo/vector-icons';
 import ModalSelector from 'react-native-modal-selector-searchable';
 import styles from './style';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
+import { Button, Overlay } from 'react-native-elements';
 
 const ModalSelectorCus = ({ data, initValue, onChange, mySearch, value, myBorder, myText, myIcon }) => {
+
   const handleChange = React.useCallback((option) => {
     onChange(option.label);
   }, [onChange]);
@@ -50,7 +52,8 @@ const ModalSelectorCus = ({ data, initValue, onChange, mySearch, value, myBorder
         placeholder={initValue}
         editable={false}
         label={initValue}
-        inputStyles={{ color: '#134484' }}
+        containerStyles={styles.input}
+        inputStyles={{ color: '#2b0847', fontWeight: '500' }}
         labelStyles={{ fontWeight: 'bold' }}
         rightComponent={<Entypo name="chevron-down" size={20} color="#888" />}
       />

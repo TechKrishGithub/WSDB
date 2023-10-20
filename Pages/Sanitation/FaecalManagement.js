@@ -4,67 +4,51 @@ import styles from '../style';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { FloatingLabelInput } from "react-native-floating-label-input";
 
-const Operation = ({ Operation, setOperation }) => {
-  const OperationData = [
-    "Type of Management *",
-    "Communal",
-    "Private/Individual",
-    "Private Operator",
-    "Institutional",
-    "Other-Specify",
-    "Other-Specify_Data",
-    "Does this Source have a WSC *",
-    "If Yes, When was this WSC Established",
-    "Yes - Month/Year of Establishment",
-    "No",
-    "If Established, Is was the it trained",
-    "Yes - Month/Year of Training",
-    "No",
-    "Is WSC functional",
-    "If WSC is Functional, tick applicable box",
-    "WSC is collecting user fees",
-    "WSC undertakes regular servicing/minor repairs",
-    "WSC is holding regular meetings",
-    "Environment/sanitation around the source is ok",
-    "If WSC is not functional,indicate main reasons why: ",
-    "Source Dried Up/Low Yield",
-    "WSC Not trained",
-    "Majority of Members shifted/moved/Died",
-    "Alternative Water facility In place",
-    "Source Brokedown beyond means of Community",
-    "WSC Not Commited",
+const FaecalManagement = ({ FaecalManagement, setFaecalManagement }) => {
+
+  const FaecalManagementData = [
+    "Has this facility ever required emptying",
+    "when it got full*",
+    "If Yes on6.1,Frequency of emptying (choose one)",
+    "Monthly",
+    "Quarterly",
+    "B1-Annually",
+    "Annually",
+    "When Need arises",
+    "If Yes on 6.1,What was the emptying Technology and at how much did it cost",
+    "Gulper Technology",
+    "Cess Pool/Vaccum Vehide",
+    "Manual",
     "Other",
-    "If WSC exists",
-    "No.of members on WSC",
-    "No.of active members on WSC",
-    "No.of women on WSC",
-    "Are there women in key Positions",
-    "No.of women holding key positions",
-    "Tick applicable position(s) below",
-    "Chairperson",
-    "Vice-chairperson",
-    "Secretary",
-    "Treasurer",
+    "If No on 6.1,How do you manage feacal Sludge",
+    "Add/Use Chemikals",
+    "Abandon and Bulld new one",
+    "Other-specify",
+    "If this facility is connected to a sewar, what kind of sewar does it use",
+    "Off-site(i.e sewar System/Line)",
+    "On-site(e.g Septic Tank,Bio-digestor etc)"
+
   ];
 
   const handleType = (label, index) => {
-    if (Operation[index] === label) {
-      const updatedData = { ...Operation };
+    if (FaecalManagement[index] === label) {
+      const updatedData = { ...FaecalManagement };
       delete updatedData[index];
-      setOperation(updatedData);
+      setFaecalManagement(updatedData);
     } else {
-      setOperation({ ...Operation, [index]: label });
+      setFaecalManagement({ ...FaecalManagement, [index]: label });
     }
   };
+
   return (
     <View>
-      {OperationData.map((v, index) => {
+      {FaecalManagementData.map((v, index) => {
         const shouldDisplayInput = [
-          0, 6, 9, 8, 11, 12, 15, 20, 27, 28, 29, 30, 31, 33, 34,
+          0, 2, 13, 17, 8, 9, 10, 11, 12, 16,
         ].includes(index);
         const Test =
-          (Object.keys(Operation).includes("5") && index == 6) ||
-          ![6].includes(index);
+          (Object.keys(FaecalManagement).includes("5") && index == 6) ||
+          ![5].includes(index);
         return (
           <View key={index}>
             {!shouldDisplayInput ? (
@@ -74,12 +58,12 @@ const Operation = ({ Operation, setOperation }) => {
                 fillColor="#134484"
                 style={{ padding: 10 }}
                 text={v}
-                isChecked={Operation[index] ? true : false}
+                isChecked={FaecalManagement[index] ? true : false}
                 innerIconStyle={{ borderWidth: 2 }}
                 textStyle={{ textDecorationLine: "none", color: "#134484" }}
                 onPress={() => handleType(v, index)}
               />
-            ) : ![0, 8, 11, 15, 20, 28, 34].includes(index) ? (
+            ) : ![0, 2, 8, 13, 17,].includes(index) ? (
               <View
                 style={[
                   {
@@ -94,8 +78,8 @@ const Operation = ({ Operation, setOperation }) => {
                 {Test && (
                   <FloatingLabelInput
                     label={`${v.replace("_Data", "")}`}
-                    value={Operation[v]}
-                    hint={`${v.replace("_Data", "")}`}
+                    hint={`${v.replace("_Data", "").replace('*','')}`}
+                    value={FaecalManagement[v]}
                     onChangeText={(e) => handleType(e, v)}
                     containerStyles={styles.input}
                     inputStyles={{ color: '#2b0847', fontWeight: '500' }}
@@ -119,4 +103,7 @@ const Operation = ({ Operation, setOperation }) => {
   );
 };
 
-export default Operation;
+
+
+
+export default FaecalManagement;

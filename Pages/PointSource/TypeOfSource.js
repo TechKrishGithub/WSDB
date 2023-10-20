@@ -1,12 +1,36 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import styles from './style';
+import styles from '../style';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 
 
 const TypeOfSource = ({ TypeOfSourceData, setTypeOfSourceData }) => {
-    const TypeOfSourceLabels1 = ["Protected Spring", "No. of Spouts", "Shallow Well/Hand Dug(Less than 30m deep) with hand pump", "Deep borehole (more than 30m deep) with hand pump", "Rainwater Harvest Tank(6,000 liters and above)", "Volume of Tank", "WfP Borehole", "Unprotected Spring", "Public Stand Post", "No. Tapstands_Public", "Kiosk", "No. Tapstands_Kiosk", "Yard tap for public use", "No. Tapstands_Yard", "• If Taps,Indicate Sheme/System Details:", "• Indicate type of mother Scheme/System", "Ground Water based (GWB)", "Surface Water Based (SWB)", "Combined Ground and Surface water based", "Indicate Name of Piped System/Scheme", "Is this source within in the premise *", "No. of Households within the premise", "• Estimated number of households (using this source):", "Within 0-500m radius", "Within 500-1000m radius", "Beyond > 1000m radius", "If Permise is an institutions how many estimated students/patients/soldiers/etc.", "Estimate average people per"];
+    const TypeOfSourceLabels1 = [
+        "Protected Spring",
+        "No. of Spouts",
+        "Shallow Well/Hand Dug(Less than 30m deep) with hand pump",
+        "Deep borehole (more than 30m deep) with hand pump",
+        "Rainwater Harvest Tank(6,000 liters and above)",
+        "Volume of Tank",
+        "WfP Borehole",
+        "Unprotected Spring",
+        "Public Stand Post",
+        "No. Tapstands_Public", "Kiosk",
+        "No. Tapstands_Kiosk", "Yard tap for public use",
+        "No. Tapstands_Yard", "• If Taps,Indicate Sheme/System Details:",
+        "• Indicate type of mother Scheme/System",
+        "Ground Water based (GWB)",
+        "Surface Water Based (SWB)",
+        "Combined Ground and Surface water based",
+        "Indicate Name of Piped System/Scheme",
+        "Is this source within in the premise *",
+        "No. of Households within the premise",
+        "• Estimated number of households (using this source):",
+        "Within 0-500m radius", "Within 500-1000m radius",
+        "Beyond > 1000m radius",
+        "If Permise is an institutions how many estimated students/patients/soldiers/etc.",
+        "Estimate average people per"];
 
     const toRoman = (num) => {
         const romanNumerals = ["I   . ", "II  . ", "III . ", "IV . "];
@@ -57,8 +81,10 @@ const TypeOfSource = ({ TypeOfSourceData, setTypeOfSourceData }) => {
                                     <FloatingLabelInput
                                         label={`${v.replace(/(_Public|_Kiosk|_Yard)?$/, '')} *`}
                                         value={TypeOfSourceData[v]}
+                                        hint={v.replace(/(_Public|_Kiosk|_Yard)?$/, '')}
                                         onChangeText={(e) => handleType(e, v)}
-                                        inputStyles={{ color: '#134484' }}
+                                        containerStyles={styles.input}
+                                        inputStyles={{ color: '#2b0847', fontWeight: '500' }}
                                         labelStyles={{ fontWeight: 'bold', overflow: 'hidden', width: '100%' }}
                                     />
                                 </View>

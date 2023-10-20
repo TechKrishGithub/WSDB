@@ -9,10 +9,10 @@ import { useDrawerStatus } from '@react-navigation/drawer';
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const CustomDrawerContent = ({ navigation }) => {
-    const data = ['Dashboard', 'Inspection', 'Monitoring'];
+    const data = ['Dashboard', 'Data Entry', 'Update'];
     const drawerStatus = useDrawerStatus();
     const [isExp, setExp] = React.useState(null)
-    const subData = ['Point Water Source', 'Piped Water Source', 'Sanitation'];
+    const subData = ['Point Water Source', 'Piped Water Schemes', 'Sanitation'];
 
     const icons = ['dashboard', 'instalod', 'watchman-monitoring']
 

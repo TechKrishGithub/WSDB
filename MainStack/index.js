@@ -6,7 +6,7 @@ import { Animated, View, Text, StatusBar, Image } from 'react-native'; // Import
 import BottomNav from './BottomNav';
 import CustomHeaderButton from './CustomHeaderButton';
 import UserProfileCard from './UserProfileCard';
-import { Inspection, Monitoring } from '../DrawerScreens';
+import { DataEntry, Update } from '../DrawerScreens';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import Profile from './Profile';
@@ -117,13 +117,13 @@ const MainStackScreen = () => {
                     }}
                 />
                 <MainStack.Screen
-                    name="Inspection"
-                    component={Inspection}
+                    name="Data Entry"
+                    component={DataEntry}
                     options={Options}
                 />
                 <MainStack.Screen
-                    name="Monitoring"
-                    component={Monitoring}
+                    name="Update"
+                    component={Update}
                     options={Options}
                 />
                 <MainStack.Screen

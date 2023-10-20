@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width } = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   inputCell: {
@@ -63,6 +65,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#888',
     margin: 3,
     borderRadius: 10,
+  },
+  input: {
+    borderBottomWidth: 1,
+    paddingVertical: width * 0.1 / 5,
+    borderBottomColor: '#134484',
+    marginBottom: width * 0.1 / 5
   }
 
 })

@@ -56,12 +56,14 @@ const UserProfileCard = () => {
           }}
         >
           <IconButton
-            icon={() => <EvilIcons name="user" size={30} color="black" />}
+            icon={() => <EvilIcons name="user" size={30} color="black"
+              onPress={() => navigation.navigate('Profile')}
+            />}
 
           />
           <IconButton
             icon={() => <EvilIcons name="lock" size={30} color="black" />}
-
+            onPress={() => navigation.navigate('Login')}
           />
         </Animated.View>
       )}
