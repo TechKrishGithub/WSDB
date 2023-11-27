@@ -42,7 +42,10 @@ const LocationDetail = ({ Locations, setLocations,locDet }) => {
               {k !== "source" ? (
                 <FloatingLabelInput
                   value={Locations[v][k]}
-                  label={`${k} *`}
+                  label={`${k.replace('_', ' ').replace('_', ' ').replace('_', ' ')
+                  .replace('_', ' ').replace('_', ' ').replace('_', ' ')
+                  .replace('_', ' ').replace('_', ' ')
+                  } *`}
                   hint={`${k}`}
                   onChangeText={(e) => handleInputChange(v, k, e)}
                   containerStyles={styles.input}

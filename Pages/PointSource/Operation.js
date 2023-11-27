@@ -1,121 +1,59 @@
 import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
+import SFA from "../SFA";
 
 const Operation = ({ Operation, setOperation }) => {
-  const OperationData = [
-    "Type of Management *",
-    "Communal",
-    "Private/Individual",
-    "Private Operator",
-    "Institutional",
-    "Other-Specify",
-    "Other-Specify_Data",
-    "Does this Source have a WSC *",
-    "If Yes, When was this WSC Established",
-    "Yes - Month/Year of Establishment",
-    "No",
-    "If Established, Is was the it trained",
-    "Yes - Month/Year of Training",
-    "No",
-    "Is WSC functional",
-    "If WSC is Functional, tick applicable box",
-    "WSC is collecting user fees",
-    "WSC undertakes regular servicing/minor repairs",
-    "WSC is holding regular meetings",
-    "Environment/sanitation around the source is ok",
-    "If WSC is not functional,indicate main reasons why: ",
-    "Source Dried Up/Low Yield",
-    "WSC Not trained",
-    "Majority of Members shifted/moved/Died",
-    "Alternative Water facility In place",
-    "Source Brokedown beyond means of Community",
-    "WSC Not Commited",
-    "Other",
-    "If WSC exists",
-    "No.of members on WSC",
-    "No.of active members on WSC",
-    "No.of women on WSC",
-    "Are there women in key Positions",
-    "No.of women holding key positions",
-    "Tick applicable position(s) below",
-    "Chairperson",
-    "Vice-chairperson",
-    "Secretary",
-    "Treasurer",
-  ];
+  // 1-> label
+  // 2-> Input
+  // 3-> CheckBox
 
-  const handleType = (label, index) => {
-    if (Operation[index] === label) {
-      const updatedData = { ...Operation };
-      delete updatedData[index];
-      setOperation(updatedData);
-    } else {
-      setOperation({ ...Operation, [index]: label });
-    }
-  };
+  const OperationLabels1 = [
+    { type: 1, name: "Type of Management" },
+    { type: 3, name: "Communal" },
+    { type: 3, name: "Private/Individual" },
+    { type: 3, name: "Private Operator" },
+    { type: 3, name: "Institutional" },
+    { type: 3, name: "Other-Specify" },
+    { type: 2, name: "Other-Specify_data",hide:'Other-Specify' },
+    { type: 3, name: "Does this Source have a WSC" },
+    { type: 1, name: "If Yes, When was this WSC Established",hide:'Does this Source have a WSC' },
+    { type: 3, name: "Yes - Month/Year of Establishment",hide:'Does this Source have a WSC' },
+    { type: 2, name: "YYYY/MM",hide:'Yes - Month/Year of Establishment' },
+    { type: 3, name: "No",hide:'Does this Source have a WSC'},
+    { type: 1, name: "If Established,is was it trained",hide:'Does this Source have a WSC'},
+    { type: 3, name: "Yes - Month/Year of Training",hide:'Does this Source have a WSC' },
+    { type: 2, name: "YYYY/MM",hide:'Yes - Month/Year of Training' },
+    { type: 3, name: "No",hide:'Does this Source have a WSC' },
+    { type: 3, name: "Is WSC functional" },
+    { type: 1, name: "If WSC is Functional, tick applicable box",hide:'Is WSC functional' },
+    { type: 3, name: "WSC is collecting user fees",hide:'Is WSC functional' },
+    { type: 3, name: "WSC undertakes regular servicing/minor repairs",hide:'Is WSC functional' },
+    { type: 3, name: "WSC is holding regular meetings",hide:'Is WSC functional' },
+    { type: 3, name: "Environment/sanitation around the source is ok",hide:'Is WSC functional' },
+    { type: 1, name: "If WSC is not functional,indicate main reasons why:" },
+    { type: 3, name: "Source Dried Up/Low Yield" },
+    { type: 3, name: "WSC Not trained" },
+    { type: 3, name: "Majority of Members shifted/moved/Died" },
+    { type: 3, name: "Alternative Water facility In place" },
+    { type: 3, name: "Source Brokedown beyond means of Community" },
+    { type: 3, name: "WSC Not Commited" },
+    { type: 3, name: "Other-data" },
+    { type: 2, name: "Other_data", hide:"Other-data" },
+    { type: 1, name: "If WSC exists" },
+    { type: 2, name: "No.of members on WSC" },
+    { type: 2, name: "No.of active members on WSC" },
+    { type: 2, name: "No.of women on WSC" },
+    { type: 3, name: "Are there women in key Positions" },
+    { type: 2, name: "No.of women holding key positions",hide:'Are there women in key Positions' },
+    { type: 1, name: "Tick applicable position(s) below" },
+    { type: 3, name: "Chairperson" },
+    { type: 3, name: "Vice-chairperson" },
+    { type: 3, name: "Secretary" },
+    { type: 3, name: "Treasurer" },
+    { type: 1, name: "Attach Photos" },
+    { type: 2, name: "Attach Photo Of Pointwater Source" },
+  ];
   return (
-    <View>
-      {OperationData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 6, 9, 8, 11, 12, 15, 20, 27, 28, 29, 30, 31, 33, 34,
-        ].includes(index);
-        const Test =
-          (Object.keys(Operation).includes("5") && index == 6) ||
-          ![6].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={Operation[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0, 8, 11, 15, 20, 28, 34].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0].includes(index) && { marginHorizontal: 16 },
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    value={Operation[v]}
-                    hint={`${v.replace("_Data", "")}`}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
+    <SFA labelData={OperationLabels1} data={Operation} setData={setOperation} />
   );
 };
 

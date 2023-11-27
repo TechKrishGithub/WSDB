@@ -12,18 +12,20 @@ import OtherInfoDwo from './OtherInfoDwo';
 import EnumeratorsDetails from './EnumeratorsDetails';
 import Respondents from './Respondents';
 import DataVerifications from './DataVerifications';
-import { selectData } from '../../DataBaseHandle';
 import { GpsSet } from '../../CustomComponents/GpsCordinates';
-
+import TabCntrls from '../ScrolToTab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PipedWaterScheme = () => {
-    const [activeTabId, setActiveTabId] = useState(1);
+    const [activeTabId, setActiveTabId] = useState(0);
     const [Locations, setLocations] = useState({
-        SelectionList: { District: '', County: '', SubCounty: '', Parish: '' }, Normal: {
+        SelectionList: { districtname: '', countyname: '', subcountyname: '', parishname: '' }, Normal: {
             Village: '',
             Longitude: '',
             Latitude: '',
             Elevation: '',
+            Name_Parishes_Wards_Covered_per_Subcounty_Town_Council_Division: '',
+            is_this_Scheme_in_a_Refuggee_Camp: '',
             Refugee_Campe_Name: '',
         }
     });
@@ -44,9 +46,11 @@ const PipedWaterScheme = () => {
     }
 
     const GetLocDet = async () => {
-        const data = await selectData('LocationDetails');
-        setLocDet(data)
+        // const data = await selectData('LocationDetails');
+        const data = await AsyncStorage.getItem('LocationDetails');
+        setLocDet(JSON.parse(data))
     }
+
 
     const [TypeSystemData, setTypeSystemData] = React.useState({});
     const [GenralInformationData, setGenralInformationData] = React.useState({});
@@ -60,67 +64,28 @@ const PipedWaterScheme = () => {
 
     const tabs = [
 
-        { id: 1, name: 'Location(Source Location)' },
-        { id: 2, name: 'Type System' },
-        { id: 3, name: 'General information' },
-        { id: 4, name: 'Operation and Maintenance' },
-        { id: 5, name: 'Operational Status(Functionally)' },
-        { id: 6, name: 'Other Info as reqired by the DWO' },
-        { id: 7, name: 'Respondent' },
-        { id: 8, name: 'Enumerator Details' },
-        { id: 9, name: 'Data Verification' },
+        { id: 0, name: 'Location(Source Location)' },
+        { id: 1, name: 'Type System' },
+        { id: 2, name: 'General information' },
+        { id: 3, name: 'Operation and Maintenance' },
+        { id: 4, name: 'Operational Status(Functionally)' },
+        { id: 5, name: 'Other Info as reqired by the DWO' },
+        { id: 6, name: 'Respondent' },
+        { id: 7, name: 'Enumerator Details' },
+        { id: 8, name: 'Data Verification' },
 
     ];
 
-    const scrollViewRef = useRef(null);
-
-    const handleTabPress = (tabId) => {
-        setActiveTabId(tabId);
-        const tab = tabs.find((t) => t.id === tabId);
-        if (tab) {
-            scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-        }
-    };
-
-    const tabPosition = (tabId) => {
-        const index = tabs.findIndex((t) => t.id === tabId);
-        return (index >= 0 ? index : 0) * 150;
-    };
-
-    const handleNextTab = () => {
-        const nextTabId = activeTabId + 1;
-        if (nextTabId <= tabs.length) {
-            setActiveTabId(nextTabId);
-            const tab = tabs.find((t) => t.id === nextTabId);
-            if (tab) {
-                scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-            }
-        }
-    };
-
-    const handlePreviousTab = () => {
-        const previousTabId = activeTabId - 1;
-        if (previousTabId >= 1) {
-            setActiveTabId(previousTabId);
-            const tab = tabs.find((t) => t.id === previousTabId);
-            if (tab) {
-                scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-            }
-        }
-    };
-
-
-
     const tabContents = {
-        1: <LocationDetail Locations={Locations} setLocations={setLocations} locDet={locDet} />,
-        2: <TypeSystem TypeSystem={TypeSystemData} setTypeSystem={setTypeSystemData} />,
-        3: <GenralInformation GenralInformation={GenralInformationData} setGenralInformation={setGenralInformationData} />,
-        4: <OperationsMaintenance OperationsMaintenance={OperationsMaintenanceData} setOperationsMaintenance={setOperationsMaintenanceData} />,
-        5: <OperationalFunction OperationalFunction={OperationalFunctionData} setOperationalFunction={setOperationalFunctionData} />,
-        6: <OtherInfoDwo OtherInfoDwo={OtherInfoDwoData} setOtherInfoDwo={setOtherInfoDwoData} />,
-        7: < Respondents Respondents={RespondentsData} setRespondents={setRespondentsData} />,
-        8: <EnumeratorsDetails EnumeratorsDetails={EnumeratorsDetailsData} setEnumeratorsDetails={setEnumeratorsDetailsData} />,
-        9: <DataVerifications DataVerifications={DataVerificationsData} setDataVerifications={setDataVerificationsData} />
+        0: <LocationDetail Locations={Locations} setLocations={setLocations} locDet={locDet} />,
+        1: <TypeSystem TypeSystem={TypeSystemData} setTypeSystem={setTypeSystemData} />,
+        2: <GenralInformation GenralInformation={GenralInformationData} setGenralInformation={setGenralInformationData} />,
+        3: <OperationsMaintenance OperationsMaintenance={OperationsMaintenanceData} setOperationsMaintenance={setOperationsMaintenanceData} />,
+        4: <OperationalFunction OperationalFunction={OperationalFunctionData} setOperationalFunction={setOperationalFunctionData} />,
+        5: <OtherInfoDwo OtherInfoDwo={OtherInfoDwoData} setOtherInfoDwo={setOtherInfoDwoData} />,
+        6: < Respondents Respondents={RespondentsData} setRespondents={setRespondentsData} />,
+        7: <EnumeratorsDetails EnumeratorsDetails={EnumeratorsDetailsData} setEnumeratorsDetails={setEnumeratorsDetailsData} />,
+        8: <DataVerifications DataVerifications={DataVerificationsData} setDataVerifications={setDataVerificationsData} />
 
     };
 
@@ -128,48 +93,11 @@ const PipedWaterScheme = () => {
         <View
             style={[styles.container, { backgroundColor: '#f0f6f8' }]}
         >
-            <View style={styles.Title}>
-                <Text style={styles.TitleText}> {`➪  Piped Water Schemes`}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                <IconButton
-                    icon="arrow-left"
-                    iconColor='blue'
-                    size={20}
-                    onPress={handlePreviousTab}
-                    disabled={activeTabId === 1}
-                />
-                <ScrollView
-                    horizontal
-                    ref={scrollViewRef}
-                    contentContainerStyle={{ paddingHorizontal: 20, elevation: 10 }}
-                    showsHorizontalScrollIndicator={false}
-                    keyboardShouldPersistTaps="always"
-                >
-                    {tabs.map((tab) => (
-                        <TouchableOpacity
-                            key={tab.id}
-                            onPress={() => handleTabPress(tab.id)}
-                            style={[
-                                styles.tabContent,
-                                { backgroundColor: activeTabId === tab.id ? 'lightblue' : 'white' },
-                            ]}
-                        >
-                            <Text style={styles.tabText}>{tab.name}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-                <IconButton
-                    icon="arrow-right"
-                    iconColor={MD3Colors.error50}
-                    size={20}
-                    onPress={handleNextTab}
-                    disabled={activeTabId === tabs.length}
-                />
-
-            </View>
+  
+            <TabCntrls data={tabs} activeTabId={activeTabId} setActiveTabId={setActiveTabId} title={`➪  Piped Water Schemes`}/>
             <ScrollView
                 keyboardShouldPersistTaps="always"
+                showsVerticalScrollIndicator={false}
             >
                 <View style={{ padding: 20 }}>
                     {tabContents[activeTabId]}

@@ -15,6 +15,10 @@ import styles, {
     DEFAULT_CELL_BG_COLOR,
     NOT_EMPTY_CELL_BG_COLOR,
 } from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet } from 'react-native';
+import { Alert } from 'react-native';
+import { BackHandler } from 'react-native';
 
 const { Value, Text: AnimatedText } = Animated;
 
@@ -41,11 +45,25 @@ const animateCell = ({ hasValue, index, isFocused }) => {
 const PinAccess = ({ navigation }) => {
     const [value, setValue] = useState('');
     const [error, setError] = useState('');
+
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
         setValue,
     });
+
+
+    // function handleBackButtonClick() {
+    //     // BackHandler.exitApp();
+    //     return true;
+    // }
+
+    // React.useEffect(() => {
+    //     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    //     return () => {
+    //         BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+    //     };
+    // }, []);
 
     const renderCell = ({ index, symbol, isFocused }) => {
         const hasValue = Boolean(symbol);
@@ -88,12 +106,14 @@ const PinAccess = ({ navigation }) => {
         );
     };
 
-    const validatePin = () => {
+    const validatePin = async () => {
+        const pin = await AsyncStorage.getItem('Pin');
         if (!value) {
             setError('Please Enter Pin !')
             return;
         }
-        if (value !== '1234') {
+        if (parseInt(value) !== parseInt(pin)) {
+            console.log(typeof value)
             setError('Please Enter Valid Pin !');
             setValue('');
             return;
@@ -103,9 +123,17 @@ const PinAccess = ({ navigation }) => {
         console.log(value)
     }
 
+    React.useEffect(() => {
+        if (value.length == 4) {
+            validatePin();
+        }
+    }, [value])
 
     return (
         <SafeAreaView style={styles.root}>
+            <View
+                style={[StyleSheet.absoluteFillObject, { backgroundColor: 'rgba(90, 23, 60,0.1)' }]}
+            />
             {error && <Alerts showAlert={error} setShowAlert={setError} />}
             <Text style={styles.title}>Verification</Text>
             <Image style={styles.icon} source={require('../../assets/lock.png')} />
@@ -125,11 +153,11 @@ const PinAccess = ({ navigation }) => {
                     renderCell={renderCell}
                 />
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={validatePin}
                     style={styles.nextButton}>
                     <Text style={styles.nextButtonText}>Verify</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </SafeAreaView>
     );

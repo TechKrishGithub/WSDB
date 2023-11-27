@@ -29,12 +29,7 @@ const LocationDetails = (props) => {
     //   },
     // });
   };
-
-
-
-
-
-  const handleQuestionComment = (index, comment) => {
+const handleQuestionComment = (index, comment) => {
     setQuestionData({
       ...QuestionData,
       [index]: comment,
@@ -56,8 +51,7 @@ const LocationDetails = (props) => {
       }
     }
   }
-
-  const RetriveDataWithUnique = (Field) => {
+const RetriveDataWithUnique = (Field) => {
     const UniqueField = Field.filter((v, index) => Field.indexOf(v) === index);
     return UniqueField;
   }
@@ -67,9 +61,7 @@ const LocationDetails = (props) => {
   const [QuestionData, setQuestionData] = React.useState({});
   const [error, setError] = React.useState();
   const [visible, setVisible] = React.useState();
-
-
-  return (
+return (
     <View style={{}}>
       {Object.keys(Location).map((v, index) => {
         if (index == 0) {
@@ -133,13 +125,5 @@ const LocationDetails = (props) => {
     </View>
   );
 };
-
-
-
-
-
-
-
-
 
 export default LocationDetails;

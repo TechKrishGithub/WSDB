@@ -72,10 +72,10 @@ const LocationDetailsForAll = (props) => {
                     <FloatingLabelInput
                         value={Location[v][k]}
                         editable={false}
-                        label={`${k} *`}
+                        label={`${k.replace('name','')} *`}
                         containerStyles={styles.input}
                         inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                        labelStyles={{ fontWeight: 'bold' }}
+                        labelStyles={{ fontWeight: 'bold',textTransform:'capitalize' }}
                         rightComponent={
                             <TouchableOpacity
                                 onPress={() => handleLocPress(LocIndex, v, k, valuePorp)}

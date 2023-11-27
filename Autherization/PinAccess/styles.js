@@ -1,9 +1,9 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export const CELL_SIZE = 50;
-export const CELL_BORDER_RADIUS = 8;
+export const CELL_BORDER_RADIUS = 10;
 export const DEFAULT_CELL_BG_COLOR = '#fff';
-export const NOT_EMPTY_CELL_BG_COLOR = '#3557b7';
+export const NOT_EMPTY_CELL_BG_COLOR = '#fff';
 export const ACTIVE_CELL_BG_COLOR = '#f7fafe';
 
 const styles = StyleSheet.create({
@@ -40,13 +40,12 @@ const styles = StyleSheet.create({
 
     root: {
         flex:1,
-        margin:20,
+        backgroundColor:'#20187f',
         justifyContent: 'center',
         alignItems: 'center'
     },
     title: {
-        paddingTop: 50,
-        color: '#000',
+        color: '#fff',
         fontSize: 25,
         fontWeight: '700',
         textAlign: 'center',
@@ -60,22 +59,21 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         paddingTop: 30,
-        color: '#000',
+        color: '#fff',
         textAlign: 'center',
     },
     nextButton: {
         marginTop: 30,
-        borderRadius: 60,
-        height: 60,
-        backgroundColor: '#20187f',
+        backgroundColor: 'lightblue',
         justifyContent: 'center',
-        minWidth: 300,
+        padding:15,
+        borderRadius:20,
         marginBottom: 100,
     },
     nextButtonText: {
         textAlign: 'center',
         fontSize: 20,
-        color: '#fff',
+        color: '#000',
         fontWeight: '700',
     },
 });

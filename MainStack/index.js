@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native';
 import Profile from './Profile';
 import Login from '../Autherization/Login';
 import PinAccess from '../Autherization/PinAccess';
+import PinGeneration from '../Autherization/PinGeneration';
 
 
 
@@ -81,6 +82,11 @@ const MainStackScreen = () => {
                 <MainStack.Screen
                     name="PinAccess"
                     component={PinAccess}
+                    options={{ headerShown: false }}
+                />
+                <MainStack.Screen
+                    name="PinGeneration"
+                    component={PinGeneration}
                     options={{ headerShown: false }}
                 />
                 <MainStack.Screen

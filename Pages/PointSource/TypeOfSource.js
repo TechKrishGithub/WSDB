@@ -1,104 +1,59 @@
+
+
 import React from 'react';
-import { View, Text } from 'react-native';
-import styles from '../style';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { FloatingLabelInput } from 'react-native-floating-label-input';
+import SFA from '../SFA';
 
 
 const TypeOfSource = ({ TypeOfSourceData, setTypeOfSourceData }) => {
+
+    // 1-> label
+    // 2-> Input
+    // 3-> CheckBox
+
     const TypeOfSourceLabels1 = [
-        "Protected Spring",
-        "No. of Spouts",
-        "Shallow Well/Hand Dug(Less than 30m deep) with hand pump",
-        "Deep borehole (more than 30m deep) with hand pump",
-        "Rainwater Harvest Tank(6,000 liters and above)",
-        "Volume of Tank",
-        "WfP Borehole",
-        "Unprotected Spring",
-        "Public Stand Post",
-        "No. Tapstands_Public", "Kiosk",
-        "No. Tapstands_Kiosk", "Yard tap for public use",
-        "No. Tapstands_Yard", "• If Taps,Indicate Sheme/System Details:",
-        "• Indicate type of mother Scheme/System",
-        "Ground Water based (GWB)",
-        "Surface Water Based (SWB)",
-        "Combined Ground and Surface water based",
-        "Indicate Name of Piped System/Scheme",
-        "Is this source within in the premise *",
-        "No. of Households within the premise",
-        "• Estimated number of households (using this source):",
-        "Within 0-500m radius", "Within 500-1000m radius",
-        "Beyond > 1000m radius",
-        "If Permise is an institutions how many estimated students/patients/soldiers/etc.",
-        "Estimate average people per"];
+        { type: 1, name: "Tick the applicable box below" },
+        { type: 3, name: "Protected Spring" },
+        { type: 3, name: "No. of Spouts",hide:'Protected Spring' },
+        { type: 3, name: "Shallow Well/Hand Dug(Less than 30m deep) with hand pump" },
+        { type: 3, name: "Deep borehole (more than 30m deep) with hand pump" },
+        { type: 3, name: "Rainwater Harvest Tank(6,000 liters and above)" },
+        { type: 2, name: "Volume of Tank",hide:'Rainwater Harvest Tank(6,000 liters and above)' },
+        { type: 3, name: "WfP Borehole" },
+        { type: 3, name: "Unprotected Spring" },
+        { type: 3, name: "Public Stand Post" },
+        { type: 2, name: "No. Tapstands_Public",hide:'Public Stand Post' },
+        { type: 3, name: "Kiosk" },
+        { type: 2, name: "No. Tapstands_Kiosk",hide:'Kiosk'},
+        { type: 3, name: "Yard tap for public use" },
+        { type: 2, name: "No. Tapstands_Yard",hide:'Yard tap for public use'  },
+        { type: 1, name: "If Taps,Indicate Sheme/System Details" },
+        { type: 1, name: "Indicate type of mother Scheme/System" },
+        { type: 3, name: "Ground Water based (GWB)" },
+        { type: 3, name: "Surface Water Based (SWB)" },
+        { type: 3, name: "Combined Ground and Surface water based" },
+        { type: 2, name: "Indicate Name of Piped System/Scheme" },
+        { type: 3, name: "Is this source within in the premise" },
+        { type: 2, name: "No. of Households within the premise" },
+        { type: 1, name: "Estimated number of households (using this source):" },
+        { type: 2, name: "Within 0-500m radius", roman: 'I' },
+        { type: 2, name: "Within 500-1000m radius", roman: 'II' },
+        { type: 2, name: "Beyond > 1000m radius", roman: 'III' },
+        { type: 2, name: "If Permise is an institutions how many estimated students/patients/soldiers/etc." },
+        { type: 2, name: "Estimate average people per" }
+    ];
 
     const toRoman = (num) => {
         const romanNumerals = ["I   . ", "II  . ", "III . ", "IV . "];
         return romanNumerals[num - 1] || num;
     };
 
-    const handleType = (label, index) => {
-        if (TypeOfSourceData[index] === label) {
-            const updatedData = { ...TypeOfSourceData };
-            delete updatedData[index];
-            setTypeOfSourceData(updatedData);
-        } else {
-            setTypeOfSourceData({ ...TypeOfSourceData, [index]: label });
-        }
-    }
+
     return (
-        <View>
-            <Text style={styles.question}>{`• Tick the applicable box below *`}</Text>
-            {TypeOfSourceLabels1.map((v, index) => {
-                const shouldDisplayInput = [1, 5, 9, 11, 13, 14, 15, 19, 21, 22, 23, 24, 25, 26, 27].includes(index);
-                const Test = (Object.keys(TypeOfSourceData).includes('0') && index == '1') || (Object.keys(TypeOfSourceData).includes('4') && index == '5') || (Object.keys(TypeOfSourceData).includes('8') && index == '9') || (Object.keys(TypeOfSourceData).includes('10') && index == '11') || (Object.keys(TypeOfSourceData).includes('12') && index == '13') || [19, 21, 23, 24, 25, 26, 27].includes(index)
-                let count = 1;
-                return (
-                    <View key={index}>
-                        {!shouldDisplayInput ?
-                            <BouncyCheckbox
-                                size={20}
-                                key={index}
-                                fillColor="#134484"
-                                style={{ padding: 10 }}
-                                text={v}
-                                isChecked={TypeOfSourceData[index] ? true : false}
-                                innerIconStyle={{ borderWidth: 2 }}
-                                textStyle={{ textDecorationLine: 'none', color: '#134484' }}
-                                onPress={() => handleType(v, index)}
-                            />
-                            :
-                            Test ? (
-                                <View style={[{
-                                    marginVertical: 16,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    overflow: 'scroll'
-                                }, ![19, 21, 26, 27].includes(index) && { marginHorizontal: 16 },]}>
-                                    {[23, 24, 25].includes(index) && (
-                                        <Text style={{ fontWeight: 'bold', color: '#134484' }}>{toRoman(index - 22)}</Text>
-                                    )}
-                                    <FloatingLabelInput
-                                        label={`${v.replace(/(_Public|_Kiosk|_Yard)?$/, '')} *`}
-                                        value={TypeOfSourceData[v]}
-                                        hint={v.replace(/(_Public|_Kiosk|_Yard)?$/, '')}
-                                        onChangeText={(e) => handleType(e, v)}
-                                        containerStyles={styles.input}
-                                        inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                                        labelStyles={{ fontWeight: 'bold', overflow: 'hidden', width: '100%' }}
-                                    />
-                                </View>
-                            )
-                                :
-                                [14, 15, 19, 22].includes(index) &&
-                                (
-                                    <Text style={[styles.question, { paddingVertical: 10 }]}>{v}</Text>
-                                )
-                        }
-                    </View>
-                )
-            })}
-        </View>
+        <SFA
+            labelData={TypeOfSourceLabels1}
+            data={TypeOfSourceData}
+            setData={setTypeOfSourceData}
+        />
     )
 
 }

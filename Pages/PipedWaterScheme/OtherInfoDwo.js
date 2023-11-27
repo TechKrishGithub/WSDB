@@ -1,93 +1,28 @@
-import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
+import React from 'react';
+import SFA from '../SFA';
+
 
 const OtherInfoDwo = ({ OtherInfoDwo, setOtherInfoDwo }) => {
 
-  const OtherInfoDwoData = [
-    "Does the scheme offer Pro-Poor services*",
-    "Does the scheme offer Pro-Poor services*",
-    "i.e.where people payless or equal to the house connection tariff in the service area",
-    "Other Info as required by the DWO",
+    // 1-> label
+    // 2-> Input
+    // 3-> CheckBox
 
-  ];
+    const OtherInfoDwoLabels1 = [
+        { type: 1, name: "Does the scheme offer Pro-Poor services" },
+        { type: 3, name: "Does the scheme offer Pro-Poor services" },
+        { type: 1, name: "i.e.where people payless or equal to the house connection tariff in the service area" },
+        { type: 2, name: "Other Info as required by the DWO" },
 
-  const handleType = (label, index) => {
-    if (OtherInfoDwo[index] === label) {
-      const updatedData = { ...OtherInfoDwo };
-      delete updatedData[index];
-      setOtherInfoDwo(updatedData);
-    } else {
-      setOtherInfoDwo({ ...OtherInfoDwo, [index]: label });
-    }
-  };
+    ]
+    return (
+        <SFA
+            labelData={OtherInfoDwoLabels1}
+            data={OtherInfoDwo}
+            setData={setOtherInfoDwo}
+        />
+    )
 
-  return (
-    <View>
-      {OtherInfoDwoData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 2, 3
-        ].includes(index);
-        const Test =
-          (Object.keys(OtherInfoDwo).includes("5") && index == 6) ||
-          ![5].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={OtherInfoDwo[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0, 2].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0,].includes(index) && { marginHorizontal: 16 },
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    hint={`${v.replace("_Data", "")}`}
-                    value={OtherInfoDwo[v]}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
-  );
-};
-
-
-
+}
 
 export default OtherInfoDwo;

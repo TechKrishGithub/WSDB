@@ -1,118 +1,60 @@
+
 import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
+import SFA from "../SFA";
 
 const TypeSystem = ({ TypeSystem, setTypeSystem }) => {
+  // 1-> label
+  // 2-> Input
+  // 3-> CheckBox
 
-  const TypeSystemData = [
-    "Type Of System/scheme",
-    "Groundwater based(GWB)",
-    "Surface Water Based(SWB)",
-    "Combined Ground & Surface Water Based(GWB/SWB)",
-    "Local ID number of piped system/scheme",
-    "Name of Piped System/Scheme",
-    "Energy Source for Pumping(Combinations are possible)",
-    "Gravlty FlowScheme",
-    "National Grid/Electricity",
-    "Windmill",
-    "Generator/Diesel",
-    "Solar Powered",
-    "Hybrid",
-    "Does the scheme have a Surface Water source",
-    "If Yes, give type and named of source",
-    "Lake,indcate name",
-    "River,indcate name",
-    "Wetland/Swamp-name",
-    "Does the scheme have a Ground Water source",
-    "If Yes, given type, Name and Number",
-    "Borehole/Production Well(s)",
-    "indcate DWDno(s)",
-    "Spring(s),indcate name(S)",
-    "Other-given type&name",
-    "Source of funding",
-    "GoU-Central Govt specify",
-    "GoU-Local Govt specify",
-    "NGO- Give name",
-    "Partnership -Give name",
-    "Other-specify"
+  const TypeSystemLabels1 = [
+    { type: 1, name: "Type Of System/scheme" },
+    { type: 3, name: "No of Public Stand Posts" },
+    { type: 3, name: "Surface Water Based(SWB)" },
+    { type: 3, name: "Combined Ground & Surface Water Based(GWB/SWB)" },
+    { type: 2, name: "Local ID number of piped system/scheme", },
+    { type: 2, name: "Name of Piped System/Scheme" },
+    { type: 1, name: "Energy Source for Pumping(Combinations are possible)" },
+    { type: 3, name: "Gravlty FlowScheme" },
+    { type: 3, name: "National Grid/Electricity" },
+    { type: 3, name: "Windmill" },
+    { type: 3, name: "Generator/Diesel" },
+    { type: 3, name: "Solar Powered" },
+    { type: 3, name: "Hybrid" },
+    { type: 3, name: "Does the scheme have a Surface Water source" },
+    { type: 1, name: "If Yes, give type and named of source", hide: 'Does the scheme have a Surface Water source' },
+    { type: 2, name: "Lake,indcate name", hide: 'Does the scheme have a Surface Water source' },
+    { type: 2, name: "River,indcate name", hide: 'Does the scheme have a Surface Water source' },
+    { type: 2, name: "Wetland/Swamp-name", hide: 'Does the scheme have a Surface Water source' },
+    { type: 3, name: "Does the scheme have a Ground Water source" },
+    { type: 1, name: "If Yes, given type, Name and Number", hide: 'Does the scheme have a Ground Water source' },
+    { type: 2, name: "Borehole/Production Well(s)", hide: 'Does the scheme have a Ground Water source' },
+    { type: 2, name: "indcate DWDno(s)", hide: 'Does the scheme have a Ground Water source' },
+    { type: 2, name: "Spring(s),indcate name(S)", hide: 'Does the scheme have a Ground Water source' },
+    { type: 3, name: "Other-given type&name" },
+    { type: 2, name: "Other-given type&name-data", hide: 'Other-given type&name' },
+    { type: 1, name: "Source of funding" },
+    { type: 3, name: "GoU-Central Govt specify" },
+    { type: 2, name: "GoU-Central Govt specify-data", hide: 'GoU-Central Govt specify' },
+    { type: 3, name: "GoU-Local Govt specify" },
+    { type: 2, name: "GoU-Local Govt specify-data", hide: 'GoU-Local Govt specify' },
+    { type: 3, name: "NGO- Give name" },
+    { type: 2, name: "NGO- Give name-data", hide: 'NGO- Give name' },
+    { type: 3, name: "Partnership -Give name" },
+    { type: 2, name: "Partnership -Give name-data", hide: 'Partnership -Give name' },
+    { type: 3, name: "Other-specify" },
+    { type: 2, name: "Other-specify-data", hide: 'Other-specify' },
+
   ];
-
-  const handleType = (label, index) => {
-    if (TypeSystem[index] === label) {
-      const updatedData = { ...TypeSystem };
-      delete updatedData[index];
-      setTypeSystem(updatedData);
-    } else {
-      setTypeSystem({ ...TypeSystem, [index]: label });
-    }
-  };
-
   return (
-    <View>
-      {TypeSystemData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 6, 24, 4, 5, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29
-        ].includes(index);
-        const Test =
-          (Object.keys(TypeSystem).includes("0") && index == 0) ||
-          ![0].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={TypeSystem[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0, 6, 24].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0, 6].includes(index) && { marginHorizontal: 16 },
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    hint={`${v.replace("_Data", "")}`}
-                    value={TypeSystem[v]}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
+    <SFA
+      labelData={TypeSystemLabels1}
+      data={TypeSystem}
+      setData={setTypeSystem}
+    />
   );
 };
 
-
-
-
 export default TypeSystem;
+
+

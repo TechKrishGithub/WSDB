@@ -13,13 +13,14 @@ import RecommendationsImprovement from './RecommendationsImprovement';
 import Respondent from './Respondent';
 import Enumerator from './Enumerator';
 import AttachPhotos from './AttachPhotos';
-import { selectData } from '../../DataBaseHandle';
 import { GpsSet } from '../../CustomComponents/GpsCordinates';
+import TabCntrls from '../ScrolToTab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Sanitation = () => {
-    const [activeTabId, setActiveTabId] = useState(1);
+    const [activeTabId, setActiveTabId] = useState(0);
     const [Locations, setLocations] = useState({
-        SelectionList: { District: '', County: '', SubCounty: '', Parish: '' }, Normal: {
+        SelectionList: { districtname: '', countyname: '', subcountyname: '', parishname: '' }, Normal: {
             Village: '',
             Longitude: '',
             Latitude: '',
@@ -51,10 +52,10 @@ const Sanitation = () => {
         updatedData.Normal.Longitude = longitude.toString();
         setLocations(updatedData)
     }
-
     const GetLocDet = async () => {
-        const data = await selectData('LocationDetails');
-        setLocDet(data)
+        // const data = await selectData('LocationDetails');
+        const data = await AsyncStorage.getItem('LocationDetails');
+        setLocDet(JSON.parse(data))
     }
 
     const [GenralInformationData, setGenralInformationData] = React.useState({});
@@ -70,72 +71,34 @@ const Sanitation = () => {
 
 
     const tabs = [
-        { id: 1, name: 'Location' },
-        { id: 2, name: 'General information' },
-        { id: 3, name: 'Tpye Facility' },
-        { id: 4, name: 'Operation and Maintenance' },
-        { id: 5, name: 'Functionality Status' },
-        { id: 6, name: 'Faecal Sludge Management' },
-        { id: 7, name: 'Challenges faced of Users' },
-        { id: 8, name: 'Recommendations for Improvement' },
-        { id: 9, name: 'Respondent' },
-        { id: 10, name: 'Enumerator' },
-        { id: 11, name: 'Attach Photos' },
+        { id: 0, name: 'Location' },
+        { id: 1, name: 'General information' },
+        { id: 2, name: 'Tpye Facility' },
+        { id: 3, name: 'Operation and Maintenance' },
+        { id: 4, name: 'Functionality Status' },
+        { id: 5, name: 'Faecal Sludge Management' },
+        { id: 6, name: 'Challenges faced of Users' },
+        { id: 7, name: 'Recommendations for Improvement' },
+        { id: 8, name: 'Respondent' },
+        { id: 9, name: 'Enumerator' },
+        { id: 10, name: 'Attach Photos' },
 
     ];
-
-    const scrollViewRef = useRef(null);
-
-    const handleTabPress = (tabId) => {
-        setActiveTabId(tabId);
-        const tab = tabs.find((t) => t.id === tabId);
-        if (tab) {
-            scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-        }
-    };
-
-    const tabPosition = (tabId) => {
-        const index = tabs.findIndex((t) => t.id === tabId);
-        return (index >= 0 ? index : 0) * 150;
-    };
-
-    const handleNextTab = () => {
-        const nextTabId = activeTabId + 1;
-        if (nextTabId <= tabs.length) {
-            setActiveTabId(nextTabId);
-            const tab = tabs.find((t) => t.id === nextTabId);
-            if (tab) {
-                scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-            }
-        }
-    };
-
-    const handlePreviousTab = () => {
-        const previousTabId = activeTabId - 1;
-        if (previousTabId >= 1) {
-            setActiveTabId(previousTabId);
-            const tab = tabs.find((t) => t.id === previousTabId);
-            if (tab) {
-                scrollViewRef.current.scrollTo({ x: tabPosition(tab.id) - 20, animated: true });
-            }
-        }
-    };
 
 
     const tabContents = {
 
-        1: <Location Locations={Locations} setLocations={setLocations} locDet={locDet} />,
-        2: <GenralInformation GenralInformation={GenralInformationData} setGenralInformation={setGenralInformationData} />,
-        3: <TypeOfFacility TypeOfFacility={TypeOfFacilityData} setTypeOfFacility={setTypeOfFacilityData} />,
-        4: <OperationAndMaintenance OperationAndMaintenance={OperationAndMaintenanceData} setOperationAndMaintenance={setOperationAndMaintenanceData} />,
-        5: <FunctionalityStatus FunctionalityStatus={FunctionalityStatusData} setFunctionalityStatus={setFunctionalityStatusData} />,
-        6: <FaecalManagement FaecalManagement={FaecalManagementData} setFaecalManagement={setFaecalManagementData} />,
-        7: <ChallengesFacedUsers ChallengesFacedUsers={ChallengesFacedUsersData} setChallengesFacedUsers={setChallengesFacedUsersData} />,
-        8: <RecommendationsImprovement RecommendationsImprovement={RecommendationsImprovementData} setRecommendationsImprovement={setRecommendationsImprovementData} />,
-        9: <Respondent Respondent={RespondentData} setRespondent={setRespondentData} />,
-        10: <Enumerator Enumerator={EnumeratorData} setEnumerator={setEnumeratorData} />,
-
-        11: <AttachPhotos AttachPhotos={AttachPhotosData} setAttachPhotos={setAttachPhotosData} />,
+        0: <Location Locations={Locations} setLocations={setLocations} locDet={locDet} />,
+        1: <GenralInformation GenralInformation={GenralInformationData} setGenralInformation={setGenralInformationData} />,
+        2: <TypeOfFacility TypeOfFacility={TypeOfFacilityData} setTypeOfFacility={setTypeOfFacilityData} />,
+        3: <OperationAndMaintenance OperationAndMaintenance={OperationAndMaintenanceData} setOperationAndMaintenance={setOperationAndMaintenanceData} />,
+        4: <FunctionalityStatus FunctionalityStatus={FunctionalityStatusData} setFunctionalityStatus={setFunctionalityStatusData} />,
+        5: <FaecalManagement FaecalManagement={FaecalManagementData} setFaecalManagement={setFaecalManagementData} />,
+        6: <ChallengesFacedUsers ChallengesFacedUsers={ChallengesFacedUsersData} setChallengesFacedUsers={setChallengesFacedUsersData} />,
+        7: <RecommendationsImprovement RecommendationsImprovement={RecommendationsImprovementData} setRecommendationsImprovement={setRecommendationsImprovementData} />,
+        8: <Respondent Respondent={RespondentData} setRespondent={setRespondentData} />,
+        9: <Enumerator Enumerator={EnumeratorData} setEnumerator={setEnumeratorData} />,
+        10: <AttachPhotos AttachPhotos={AttachPhotosData} setAttachPhotos={setAttachPhotosData} />,
 
     };
 
@@ -143,48 +106,12 @@ const Sanitation = () => {
         <View
             style={[styles.container, { backgroundColor: '#f0f6f8' }]}
         >
-            <View style={styles.Title}>
-                <Text style={styles.TitleText}> {`➪  Sanitation`}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                <IconButton
-                    icon="arrow-left"
-                    iconColor='blue'
-                    size={20}
-                    onPress={handlePreviousTab}
-                    disabled={activeTabId === 1}
-                />
-                <ScrollView
-                    horizontal
-                    ref={scrollViewRef}
-                    contentContainerStyle={{ paddingHorizontal: 20, elevation: 10 }}
-                    showsHorizontalScrollIndicator={false}
-                    keyboardShouldPersistTaps="always"
-                >
-                    {tabs.map((tab) => (
-                        <TouchableOpacity
-                            key={tab.id}
-                            onPress={() => handleTabPress(tab.id)}
-                            style={[
-                                styles.tabContent,
-                                { backgroundColor: activeTabId === tab.id ? 'lightblue' : 'white' },
-                            ]}
-                        >
-                            <Text style={styles.tabText}>{tab.name}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-                <IconButton
-                    icon="arrow-right"
-                    iconColor={MD3Colors.error50}
-                    size={20}
-                    onPress={handleNextTab}
-                    disabled={activeTabId === tabs.length}
-                />
 
-            </View>
+            <TabCntrls data={tabs} activeTabId={activeTabId} setActiveTabId={setActiveTabId} title={`➪  Sanitation`} />
+
             <ScrollView
                 keyboardShouldPersistTaps="always"
+                showsVerticalScrollIndicator={false}
             >
                 <View style={{ padding: 20 }}>
                     {tabContents[activeTabId]}

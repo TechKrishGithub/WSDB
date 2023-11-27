@@ -1,116 +1,52 @@
 import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
+import SFA from "../SFA";
 
 const OperationalFunction = ({ OperationalFunction, setOperationalFunction }) => {
+  // 1-> label
+  // 2-> Input
+  // 3-> CheckBox
 
-  const OperationalFunctionData = [
-    "Functionality*",
-    "Functional(whole Is fully function)",
-    "Non-Functional (whole system is complete down)",
-    "Partially Functional(specify problem)",
-    "If the system is not fully functional ,when did it become non-functional or only partially functional",
-    "Date",
-    "Reasons why the schema/system is not fully functional",
-    "Dry/Low yielding",
-    "Techical breakdown-specify",
-    "Power problems-specify",
-    "Non-Payment of Water Fees",
-    "Water Quality-specify",
-    "smelly",
-    "Tasty",
-    "Brown Water",
-    "Other Coloured water",
-    "Suspended Particles",
-    "Oily Water",
-    'Dirty Water',
-    "Itchy water",
-    "Other",
-    "Altemative Water facility Nearby",
-    "Poor Management",
-    "Other-specify",
-    "Year of last major repair/replacement",
-    "Give details on the repairs done ,If any"
-
+  const OperationalFunctionLabels1 = [
+    { type: 1, name: "Functionality" },
+    { type: 3, name: "Functional(whole Is fully function)" },
+    { type: 3, name: "Non-Functional (whole system is complete down)" },
+    { type: 3, name: "Partially Functional(specify problem)" },
+    { type: 2, name: "Partially Functional(specify problem)",hide:'Partially Functional(specify problem)' },
+    { type: 1,name: "If the system is not fully functional ,when did it become non-functional or only partially functional",},
+    { type: 2, name: "Date" },
+    { type: 1, name: "Reasons why the schema/system is not fully functional" },
+    { type: 3, name: "Dry/Low yielding" },
+    { type: 3, name: "Techical breakdown-specify" },
+    { type: 2, name: "Techical breakdown-specify",hide:'Techical breakdown-specify' },
+    { type: 3, name: "Power problems-specify" },
+    { type: 2, name: "Power problems-specify",hide:'Power problems-specify' },
+    { type: 3, name: "Non-Payment of Water Fees" }, 
+    { type: 1, name: "Water Quality-specify" },
+    { type: 3, name: "smelly" },
+    { type: 3, name: "Tasty" },
+    { type: 3, name: "Brown Water" },
+    { type: 3, name: "Other Coloured water" },
+    { type: 3, name: "Suspended Particles" },
+    { type: 3, name: "Oily Water" },
+    { type: 3, name: "Dirty Water" },
+    { type: 3, name: "Itchy water" },
+    { type: 3, name: "Other" },
+    { type: 2, name: "Other",hide:'Other' },
+    { type: 3, name: "Altemative Water facility Nearby" },
+    { type: 3, name: "Poor Management" },
+    { type: 3, name: "Other-specify" },
+    { type: 2, name: "Other-specify-data",hide:'Other-specify'},
+    { type: 2, name: "Year of last major repair/replacement" },
+    { type: 2, name: "Give details on the repairs done ,If any" },
 
   ];
-
-  const handleType = (label, index) => {
-    if (OperationalFunction[index] === label) {
-      const updatedData = { ...OperationalFunction };
-      delete updatedData[index];
-      setOperationalFunction(updatedData);
-    } else {
-      setOperationalFunction({ ...OperationalFunction, [index]: label });
-    }
-  };
-
   return (
-    <View>
-      {OperationalFunctionData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 6, 11, 4, 5, 8, 9, 20, 23, 24, 25
-        ].includes(index);
-        const Test =
-          (Object.keys(OperationalFunction).includes("0") && index == 6) ||
-          ![0].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={OperationalFunction[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0, 6, 11].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0,].includes(index) && { marginHorizontal: 16 },
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    hint={`${v.replace("_Data", "")}`}
-                    value={OperationalFunction[v]}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
+    <SFA
+      labelData={OperationalFunctionLabels1}
+      data={OperationalFunction}
+      setData={setOperationalFunction}
+    />
   );
 };
-
-
-
 
 export default OperationalFunction;

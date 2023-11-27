@@ -1,78 +1,58 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import styles from '../style';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { FloatingLabelInput } from 'react-native-floating-label-input';
 
+
+import React from "react";
+import SFA from "../SFA";
 
 const OperationStatus = ({ OperationStatus, setOperationStatus }) => {
+  // 1-> label
+  // 2-> Input
+  // 3-> CheckBox
 
-    const OperationStatusData = ["Functionality *", "Functional (in use)", "Functional (not in use)", "Non-Functional", "If the water source is non-functional or not in use when did it break down?(day)", "Reasons why the source is non-functional or not in use", "Dry/Low yielding", "Technical breakdown - specify", "Water Quality (Physical)", "Smelly Water", "Tasty Water(salty etc)", "Brown Water", "Other Coloured Water", "Suspended Particles", "Oily Water", "Dirty Water", "Itchy Water", "Other", "Silted(Valley tanks/Dams)", "Leaking (Rainwater Harvesting Tanks)", "Alternative source nearby", "Vandalism - specify", "Other - specify", "For Non-Functional and not used sources,give more details and explanations of main reason(s) why ", "For both functional and non-functional sources,Indicate year/Month of last repairs", "Give details on the reparis done,if any"];
-
-
-    const handleType = (label, index) => {
-        if (OperationStatus[index] === label) {
-            const updatedData = { ...OperationStatus };
-            delete updatedData[index];
-            setOperationStatus(updatedData);
-        } else {
-            setOperationStatus({ ...OperationStatus, [index]: label });
-        }
-    }
-    return (
-        <View>
-
-            {OperationStatusData.map((v, index) => {
-                const shouldDisplayInput = [0, 4, 5, 7, 17, 22, 23, 24, 25, 26].includes(index);
-                const Test = ![5].includes(index)
-                return (
-                    <View key={index}>
-                        {!shouldDisplayInput ?
-                            <BouncyCheckbox
-                                size={20}
-                                key={index}
-                                fillColor="#134484"
-                                style={{ padding: 10 }}
-                                text={v}
-                                isChecked={OperationStatus[index] ? true : false}
-                                innerIconStyle={{ borderWidth: 2 }}
-                                textStyle={{ textDecorationLine: 'none', color: '#134484' }}
-                                onPress={() => handleType(v, index)}
-                            />
-                            :
-                            ![0, 5].includes(index) ? (
-                                <View style={[{
-                                    marginVertical: 16,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    overflow: 'scroll'
-                                }, ![0].includes(index) && { marginHorizontal: 16 },]}>
-                                    {Test &&
-                                        <FloatingLabelInput
-                                            label={`${v.replace('_Data', '')}`}
-                                            value={OperationStatus[v]}
-                                            hint={`${v.replace('_Data', '')}`}
-                                            onChangeText={(e) => handleType(e, v)}
-                                            containerStyles={styles.input}
-                                            inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                                            labelStyles={{ fontWeight: 'bold', overflow: 'hidden', width: '100%' }}
-                                        />
-                                    }
-
-                                </View>
-                            )
-                                :
-                                (
-                                    <Text style={[styles.question, { paddingVertical: 10 }]}>{`• ${v}`}</Text>
-                                )
-                        }
-                    </View>
-                )
-            })}
-        </View>
-    )
-
-}
-
+  const OperationStatusLabels1 = [
+    { type: 1, name: "Functionality" },
+    { type: 3, name: "Functional (in use)" },
+    { type: 3, name: "Functional (not in use)" },
+    { type: 3, name: "Non-Functional" },
+    {type: 2,name: "If the water source is non-functional or not in use when did it break down?(day)",},
+    { type: 1, name: "Reasons why the source is non-functional or not in use" },
+    { type: 3, name: "Dry/Low yielding" },
+    { type: 3, name: "Technical breakdown - specify" },
+    { type: 2, name: "Technical breakdown - specify_data",hide:'Technical breakdown - specify' },
+    { type: 3, name: "Water Quality (Physical)" },
+    { type: 3, name: "Smelly Water",hide:'Water Quality (Physical)' },
+    { type: 3, name: "Tasty Water(salty etc)",hide:'Water Quality (Physical)' },
+    { type: 3, name: "Brown Water" ,hide:'Water Quality (Physical)'},
+    { type: 3, name: "Other Coloured Water",hide:'Water Quality (Physical)' },
+    { type: 3, name: "Suspended Particles" ,hide:'Water Quality (Physical)'},
+    { type: 3, name: "Oily Water" ,hide:'Water Quality (Physical)'},
+    { type: 3, name: "Dirty Water" ,hide:'Water Quality (Physical)'},
+    { type: 3, name: "Itchy Water",hide:'Water Quality (Physical)' },
+    { type: 3, name: "Other",hide:'Water Quality (Physical)'},
+    { type: 2, name: "Other_data",hide:'Other' },
+    { type: 3, name: "Silted(Valley tanks/Dams)" },
+    { type: 3, name: "Leaking (Rainwater Harvesting Tanks)" },
+    { type: 3, name: "Alternative source nearby" },
+    { type: 3, name: "Vandalism - specify" },
+    { type: 2, name: "Vandalism - specify_data",hide:'Vandalism - specify' },
+    { type: 3, name: "Other - specify" },
+    { type: 2, name: "Other - specify_data",hide:'Other - specify' },
+    {
+      type: 2,
+      name: "For Non-Functional and not used sources,give more details and explanations of main reason(s) why",
+    },
+    {
+      type: 2,
+      name: "For both functional and non-functional sources,Indicate year/Month of last repairs",
+    },
+    { type: 2, name: "Give details on the reparis done,if any" },
+  ];
+  return (
+    <SFA
+      labelData={OperationStatusLabels1}
+      data={OperationStatus}
+      setData={setOperationStatus}
+    />
+  );
+};
 
 export default OperationStatus;

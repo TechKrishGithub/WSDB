@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Image, ImageBackground, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,7 @@ import { InsertData, selectData } from '../../DataBaseHandle';
 import TableCreations from '../../DataBaseHandle/TableCreations';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import * as Location from "expo-location";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({ navigation }) => {
@@ -16,18 +17,8 @@ const Login = ({ navigation }) => {
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
-        GetData();
+        TableCreations();
     }, [])
-
-    const GetData = async () => {
-        const check = await selectData('LocationDetails');
-        if (check.length > 0) {
-            navigation.navigate('PinAccess')
-        }
-        else {
-            TableCreations();
-        }
-    }
 
     React.useEffect(() => {
         (async () => {
@@ -39,37 +30,42 @@ const Login = ({ navigation }) => {
         })();
     }, []);
 
-    const handleLogin = () => {
-        // Add your authentication logic here
+    const checkItemExists = async () => {
+        const value = await AsyncStorage.getItem('LocationDetails');
+        return value;
+    }
+
+    const handleLogin = async () => {
         console.log('Username:', username);
         console.log('Password:', password);
-        Insert();
+        const check = await checkItemExists();
+        if (check !== null) {
+            const pinCheck = await AsyncStorage.getItem('Pin');
+            if (pinCheck !== null) {
+                navigation.navigate('PinAccess')
+            }
+            else {
+                navigation.navigate('PinGeneration')
+            }
+        }
+        else {
+            InsertLoc()
+        }
     };
 
-    const Insert = async () => {
+    const InsertLoc = async () => {
         setLoading(true);
         fetch('http://182.18.181.115:8084/api/Masterdata/Getadministrativeboundries').
             then(response => response.json()).
             then(result => JSON.parse(result)).
-            then(rest => {
-                rest.map(async (res, index) => {
-                    const dataToInsert = {
-                        District: res.districtname,
-                        County: res.countyname,
-                        SubCounty: res.subcountyname,
-                        Parish: res.parishname
-                    }
-                    await InsertData('LocationDetails', dataToInsert)
-                    if (index == rest.length - 1) {
-                        setLoading(false);
-                        setTimeout(() => {
-                            navigation.navigate('PinAccess')
-                        }, 1000)
-                    }
-                })
+            then(async result => {
+                await AsyncStorage.setItem('LocationDetails', JSON.stringify(result));
+                setLoading(false);
+                setTimeout(() => {
+                    navigation.navigate('PinGeneration')
+                }, 1000)
             })
     }
-
 
     return (
         <ImageBackground

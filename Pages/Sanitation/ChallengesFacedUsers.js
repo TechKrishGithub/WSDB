@@ -1,101 +1,42 @@
-import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
-
-const ChallengesFacedUsers = ({ ChallengesFacedUsers, setChallengesFacedUsers }) => {
-
-  const ChallengesFacedUsersData = [
-    "What are the current challenges of Usage for Users",
-    "User Fees are high",
-    "Most people unaware of how to use facility",
-    "Users unwilling to pay for maintenance",
-    "Water Supply is intermitent",
-    "No Privacy (No Doors,cracked walls etc)",
-    "No separation between Male/Female",
-    "No access at Night",
-    "Not security for Users",
-    "Has Construction Defets (no rump,small stance etc)",
-    "Dirty Facility",
-    "Poor Customer Care",
-    "Other Specify"
-  ];
-
-  const handleType = (label, index) => {
-    if (ChallengesFacedUsers[index] === label) {
-      const updatedData = { ...ChallengesFacedUsers };
-      delete updatedData[index];
-      setChallengesFacedUsers(updatedData);
-    } else {
-      setChallengesFacedUsers({ ...ChallengesFacedUsers, [index]: label });
-    }
-  };
-
-  return (
-    <View>
-      {ChallengesFacedUsersData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 12
-        ].includes(index);
-        const Test =
-          (Object.keys(ChallengesFacedUsers).includes("5") && index == 6) ||
-          ![5].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={ChallengesFacedUsers[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0].includes(index) && { marginHorizontal: 16 },
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    hint={`${v.replace("_Data", "").replace('*', '')}`}
-                    value={ChallengesFacedUsers[v]}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
-  );
-};
 
 
 
+
+import React from 'react';
+import SFA from '../SFA';
+
+
+const ChallengesFacedUsers= ({ ChallengesFacedUsers, setChallengesFacedUsers }) => {
+
+    // 1-> label
+    // 2-> Input
+    // 3-> CheckBox
+
+    const ChallengesFacedUsersLabels1 = [
+        { type: 1, name: "What are the current challenges of Usage for Users" },
+        { type: 3, name: "User Fees are high" },
+        { type: 3, name: "Most people unaware of how to use facility" },
+        { type: 3, name: "Users unwilling to pay for maintenance" },
+        { type: 3, name: "Water Supply is intermitent" },
+        { type: 3, name: "No Privacy (No Doors,cracked walls etc)" },
+        { type: 3, name: "No separation between Male/Female" },
+        { type: 3, name: "No access at Night" },
+        { type: 3, name: "Not security for Users" },
+        { type: 3, name: "Has Construction Defets (no rump,small stance etc)" },
+        { type: 3, name: "Dirty Facility" },
+        { type: 3, name: "Poor Customer Care" },
+        { type: 3, name: "Other Specify" },
+        { type: 2, name: "Other Specify",hide:'Other Specify' },
+
+       ]
+return (
+        <SFA
+            labelData={ChallengesFacedUsersLabels1}
+            data={ChallengesFacedUsers}
+            setData={setChallengesFacedUsers}
+        />
+    )
+
+}
 
 export default ChallengesFacedUsers;

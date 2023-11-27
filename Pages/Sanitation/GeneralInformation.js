@@ -1,105 +1,56 @@
-import React from "react";
-import { View, Text } from "react-native";
-import styles from '../style';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { FloatingLabelInput } from "react-native-floating-label-input";
-
-const GenralInformation = ({ GenralInformation, setGenralInformation }) => {
-
-  const GenralInformationData = [
-    "GenralInformation",
-    "Month/Year of Construction*",
-    "If not know,Please estimate and Indicate above click the ticket (Estimate) here",
-    "Facility Labeled*",
-    "Facility Number",
-    "Source of Funding",
-    "Private",
-    "NGO/CBO-Specify",
-    "Community",
-    "Partnership-Spedfy",
-    "Other Specify",
-    "Current Ownership",
-    "Private",
-    "Community",
-    "Institutional-(Give name of Institution)",
-    "Local Goverment",
-    "Other-Specify",
-  ];
-
-  const handleType = (label, index) => {
-    if (GenralInformation[index] === label) {
-      const updatedData = { ...GenralInformation };
-      delete updatedData[index];
-      setGenralInformation(updatedData);
-    } else {
-      setGenralInformation({ ...GenralInformation, [index]: label });
-    }
-  };
-
-  return (
-    <View>
-      {GenralInformationData.map((v, index) => {
-        const shouldDisplayInput = [
-          0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-        ].includes(index);
-        const Test =
-          (Object.keys(GenralInformation).includes(5) && index == 6) ||
-          ![0].includes(index);
-        return (
-          <View key={index}>
-            {!shouldDisplayInput ? (
-              <BouncyCheckbox
-                size={20}
-                key={index}
-                fillColor="#134484"
-                style={{ padding: 10 }}
-                text={v}
-                isChecked={GenralInformation[index] ? true : false}
-                innerIconStyle={{ borderWidth: 2 }}
-                textStyle={{ textDecorationLine: "none", color: "#134484" }}
-                onPress={() => handleType(v, index)}
-              />
-            ) : ![0].includes(index) ? (
-              <View
-                style={[
-                  {
-                    marginVertical: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflow: "scroll",
-                  },
-                  ![0].includes(index)
-                ]}
-              >
-                {Test && (
-                  <FloatingLabelInput
-                    label={`${v.replace("_Data", "")}`}
-                    hint={`${v.replace("_Data", "").replace('*', '')}`}
-                    value={GenralInformation[v]}
-                    onChangeText={(e) => handleType(e, v)}
-                    containerStyles={styles.input}
-                    inputStyles={{ color: '#2b0847', fontWeight: '500' }}
-                    labelStyles={{
-                      fontWeight: "bold",
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  />
-                )}
-              </View>
-            ) : (
-              <Text
-                style={[styles.question, { paddingVertical: 10 }]}
-              >{`• ${v}`}</Text>
-            )}
-          </View>
-        );
-      })}
-    </View>
-  );
-};
 
 
+import React from 'react';
+import SFA from '../SFA';
 
+
+const GenralInformation= ({ GenralInformation, setGenralInformation }) => {
+
+    // 1-> label
+    // 2-> Input
+    // 3-> CheckBox
+
+    const GenralInformationLabels1 = [
+        { type: 1, name: "General Information" },
+        { type: 2, name: "Month/Year of Construction" },
+        { type: 3, name: "If not know,Please estimate and Indicate above click the ticket (Estimate) here" },
+        { type: 3, name: "Facility Labeled" },
+        { type: 2, name: "Facility Number" },
+        { type: 1, name: "Source of Funding" },
+        { type: 3, name: "Private data" },
+        { type: 2, name: "Private",hide:'Private data' },
+        { type: 3, name: "NGO/CBO-Specify" },
+        { type: 2, name: "NGO/CBO-Specify",hide:'NGO/CBO-Specify' },
+        { type: 3, name: "Community data" },
+        { type: 2, name: "Community",hide:'Community data' },
+        { type: 3, name: "Partnership-Spedfy" },
+        { type: 2, name: "Partnership-Spedfy",hide:"Partnership-Spedfy" },
+
+        { type: 3, name: "Other Specify" },
+        { type: 2, name: "Other Specify-data",hide:'Other Specify' },
+        { type: 1, name: "Current Ownership" },
+        { type: 3, name: "Private" },
+        { type: 2, name: "Private",hide:'Private' },
+        { type: 3, name: "Community" },
+        { type: 2, name: "Community",hide:'Community' },
+        { type: 3, name: "Institutional-(Give name of Institution)" },
+        { type: 2, name: "Institutional-(Give name of Institution)",hide:'Institutional-(Give name of Institution)'},
+        { type: 3, name: "Local Goverment" },
+        { type: 2, name: "Local Goverment",hide:'Local Goverment' },
+        { type: 3, name: "Other-Specify" },
+        { type: 2, name: "Other-Specify",hide:"Other-Specify" },
+
+      
+      ]
+
+return (
+        <SFA
+            labelData={GenralInformationLabels1}
+            data={GenralInformation}
+            setData={setGenralInformation}
+        />
+    )
+
+}
 
 export default GenralInformation;

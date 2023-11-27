@@ -53,16 +53,24 @@ const styles = StyleSheet.create({
         borderBottomColor: '#134484',
         marginBottom: width * 0.1 / 7
     },
+    TitleContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     Title: {
         padding: width * 0.1 / 5,
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
         margin: width * 0.1 / 5
     },
     TitleText: {
         fontWeight: 'bold',
         fontStyle: 'italic',
         color: '#191c4a'
+    },
+    RenderConHeading: {
+        margin: 16,
+        flexDirection: "row",
+        alignItems: "center",
+        overflow: "scroll",
     }
 })
 
